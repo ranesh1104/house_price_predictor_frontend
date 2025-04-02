@@ -242,11 +242,18 @@ export default function Page() {
 
       // Switch to results tab
       setActiveTab("results")
-    } catch (err: any) {
-      setNotification({
-        message: err.message || "Something went wrong",
-        type: "error",
-      })
+    } catch (err) {
+      if (err instanceof Error) {
+        setNotification({
+          message: err.message || "Something went wrong",
+          type: "error",
+        })
+      } else {
+        setNotification({
+          message: "Unexpected error occurred",
+          type: "error",
+        })
+      }
     } finally {
       setLoading(false)
       setProgress(100)
