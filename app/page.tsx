@@ -56,7 +56,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-// Sample presets for quick form filling
+// Define types for the yes/no fields and furnishing status to help with type safety
+type YesNo = "yes" | "no"
+type FurnishingStatus = "furnished" | "semi-furnished" | "unfurnished"
+
+// Sample presets for quick form filling with proper typing
 const presets = [
   {
     name: "Luxury Villa",
@@ -65,14 +69,14 @@ const presets = [
       bedrooms: 5,
       bathrooms: 4.5,
       stories: 2,
-      mainroad: "yes",
-      guestroom: "yes",
-      basement: "yes",
-      hotwaterheating: "yes",
-      airconditioning: "yes",
+      mainroad: "yes" as YesNo,
+      guestroom: "yes" as YesNo,
+      basement: "yes" as YesNo,
+      hotwaterheating: "yes" as YesNo,
+      airconditioning: "yes" as YesNo,
       parking: 3,
-      prefarea: "yes",
-      furnishingstatus: "furnished",
+      prefarea: "yes" as YesNo,
+      furnishingstatus: "furnished" as FurnishingStatus,
     },
   },
   {
@@ -82,14 +86,14 @@ const presets = [
       bedrooms: 2,
       bathrooms: 1,
       stories: 1,
-      mainroad: "yes",
-      guestroom: "no",
-      basement: "no",
-      hotwaterheating: "no",
-      airconditioning: "yes",
+      mainroad: "yes" as YesNo,
+      guestroom: "no" as YesNo,
+      basement: "no" as YesNo,
+      hotwaterheating: "no" as YesNo,
+      airconditioning: "yes" as YesNo,
       parking: 1,
-      prefarea: "no",
-      furnishingstatus: "semi-furnished",
+      prefarea: "no" as YesNo,
+      furnishingstatus: "semi-furnished" as FurnishingStatus,
     },
   },
   {
@@ -99,14 +103,14 @@ const presets = [
       bedrooms: 1,
       bathrooms: 1,
       stories: 1,
-      mainroad: "no",
-      guestroom: "no",
-      basement: "no",
-      hotwaterheating: "no",
-      airconditioning: "no",
+      mainroad: "no" as YesNo,
+      guestroom: "no" as YesNo,
+      basement: "no" as YesNo,
+      hotwaterheating: "no" as YesNo,
+      airconditioning: "no" as YesNo,
       parking: 0,
-      prefarea: "no",
-      furnishingstatus: "unfurnished",
+      prefarea: "no" as YesNo,
+      furnishingstatus: "unfurnished" as FurnishingStatus,
     },
   },
 ]
@@ -243,17 +247,11 @@ export default function Page() {
       // Switch to results tab
       setActiveTab("results")
     } catch (err) {
-      if (err instanceof Error) {
-        setNotification({
-          message: err.message || "Something went wrong",
-          type: "error",
-        })
-      } else {
-        setNotification({
-          message: "Unexpected error occurred",
-          type: "error",
-        })
-      }
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong"
+      setNotification({
+        message: errorMessage,
+        type: "error",
+      })
     } finally {
       setLoading(false)
       setProgress(100)
@@ -262,9 +260,22 @@ export default function Page() {
   }
 
   const applyPreset = (preset: (typeof presets)[0]) => {
-    Object.entries(preset.values).forEach(([key, value]) => {
-      form.setValue(key as keyof FormValues, value as any)
-    })
+    // Type-safe way to set form values
+    const { values } = preset
+
+    // Set each field individually with proper typing
+    form.setValue("area", values.area)
+    form.setValue("bedrooms", values.bedrooms)
+    form.setValue("bathrooms", values.bathrooms)
+    form.setValue("stories", values.stories)
+    form.setValue("mainroad", values.mainroad)
+    form.setValue("guestroom", values.guestroom)
+    form.setValue("basement", values.basement)
+    form.setValue("hotwaterheating", values.hotwaterheating)
+    form.setValue("airconditioning", values.airconditioning)
+    form.setValue("parking", values.parking)
+    form.setValue("prefarea", values.prefarea)
+    form.setValue("furnishingstatus", values.furnishingstatus)
 
     setNotification({
       message: `Applied the "${preset.name}" preset`,
@@ -273,9 +284,22 @@ export default function Page() {
   }
 
   const loadFromHistory = (item: (typeof history)[0]) => {
-    Object.entries(item.values).forEach(([key, value]) => {
-      form.setValue(key as keyof FormValues, value as any)
-    })
+    // Type-safe way to set form values
+    const { values } = item
+
+    // Set each field individually with proper typing
+    form.setValue("area", values.area)
+    form.setValue("bedrooms", values.bedrooms)
+    form.setValue("bathrooms", values.bathrooms)
+    form.setValue("stories", values.stories)
+    form.setValue("mainroad", values.mainroad as YesNo)
+    form.setValue("guestroom", values.guestroom as YesNo)
+    form.setValue("basement", values.basement as YesNo)
+    form.setValue("hotwaterheating", values.hotwaterheating as YesNo)
+    form.setValue("airconditioning", values.airconditioning as YesNo)
+    form.setValue("parking", values.parking)
+    form.setValue("prefarea", values.prefarea as YesNo)
+    form.setValue("furnishingstatus", values.furnishingstatus as FurnishingStatus)
 
     setNotification({
       message: "Previous values have been loaded",
