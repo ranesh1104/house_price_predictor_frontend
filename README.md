@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏡 House Price Predictor – Frontend
 
-## Getting Started
+This is the frontend for the **House Price Predictor** project, built with [Next.js 15](https://nextjs.org/). It provides a user-friendly UI that interacts with a machine learning model deployed via FastAPI.
 
-First, run the development server:
+---
+
+## 🔧 Tech Stack
+
+- Next.js 15 (App Router)
+- Tailwind CSS
+- React Hook Form + Zod (form validation)
+- Vercel (for deployment)
+- FastAPI (backend inference server)
+
+---
+
+## 🧑‍💻 Local Development
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/ranesh1104/house-price-predictor.git
+cd house-price-predictor
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+# or
+yarn install
+
+```
+
+### 3. Configure Environment Variables
+Create a .env file in the root directory and add the following:
+
+```bash
+
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+```
+
+If your FastAPI backend is running locally, make sure it’s running on port 8000 (or update the URL accordingly).
+
+The NEXT_PUBLIC_ prefix is required for frontend access in Next.js.
+
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser to http://localhost:3000
+You should see the House Price Predictor form.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🚀 Deploying to Vercel
+If you're deploying this frontend to Vercel:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Connect this GitHub repo to Vercel.
+2. In your Vercel Dashboard, go to Settings → Environment Variables.
+3. Add the following variable:
 
-## Learn More
+```bash
 
-To learn more about Next.js, take a look at the following resources:
+NEXT_PUBLIC_API_URL=https://<your-render-backend-service>.onrender.com
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 💡 Notes
+- The app uses Zod and React Hook Form for form validation.
+- Predicted prices and form history are saved to localStorage to improve UX.
+- You can copy, reset, and reapply form presets like "Luxury Villa" and "Budget Home".
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🙌 Acknowledgements
+- Frontend built with ❤️ using Next.js and ShadCN UI (ChatGPT & v0)
+- Backend powered by FastAPI
